@@ -31,6 +31,7 @@ import grafex.data.EngineData;
 import grafex.systems.Conductor;
 import flixel.addons.ui.FlxUIButton;
 import flixel.ui.FlxButton;
+import flixel.addons.ui.FlxButtonPlus;
 
 using StringTools;
 
@@ -38,9 +39,12 @@ class MainMenuState extends MusicBeatState
 {
 	var bg:FlxSprite;
 
+	var option:FlxButtonPlus;
+	var credit:FlxButton;
+
     override function create()
 	{
-				#if desktop
+		#if desktop
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menu", null);
 		#end
@@ -60,26 +64,43 @@ class MainMenuState extends MusicBeatState
 		FlxG.mouse.useSystemCursor = false;
 
 		bg = new FlxSprite(-80).loadGraphic(Paths.image('menuDesat'));
-		bg.scrollFactor.set(0, 0);
-		bg.setGraphicSize(Std.int(bg.width * 1.175));
+		//bg.setGraphicSize(Std.int(bg.width * 1.175));
 		bg.updateHitbox();
 		bg.screenCenter();
-		bg.visible = true;
 		bg.antialiasing = ClientPrefs.globalAntialiasing;
 		bg.color = 0xff810f31;
-		bg.scale.set(0.7, 0.7);
 		add(bg);
-		super.create();
+
+		var optSpr:FlxSprite = new FlxSprite().loadGraphic(Paths.image('mainmenu/options'));
+		var optOFSpr:FlxSprite = new FlxSprite().loadGraphic(Paths.image('mainmenu/optionsOnFocus'));
 		
-		var myButton:FlxButton = new FlxButton(850, 165, "", clickA);
-		myButton.loadGraphic(Paths.image('mainmenu/button'), false, 128, 128);
-		myButton.scale.set(0.55, 0.55);
-		add(myButton);
+		option = new FlxButtonPlus(850, 465, function() {
+			FlxG.switchState(new OptionsDirect());
+		});
+		//option.loadGraphic(Paths.image('mainmenu/options'), false, 128, 128);
+		option.loadButtonGraphic(optSpr, optOFSpr);  //Ебучий тупизм, почему я должен указывать именно спрайты как значение, а не как картинки -PyroGuy
+		option.scale.set(0.55, 0.55);
+		add(option);
+
+		credit = new FlxButton(850, 165, "", function() {
+			FlxG.switchState(new CreditsState());
+		});
+		credit.loadGraphic(Paths.image('mainmenu/credits'), false, 128, 128);
+		credit.scale.set(0.55, 0.55);
+		add(credit);
+
 		super.create();
 	}
 
-	function clickA()
-		{
-			FlxG.switchState(new OptionsDirect());
-		}
+	/*
+	function click()
+	{
+		FlxG.switchState(new OptionsDirect());
+	}
+	*/
+
+	override function update(elapsed:Float) 
+	{
+		super.update(elapsed);
+	}
 }
