@@ -72,7 +72,7 @@ class MainMenuState extends MusicBeatState
 		super.create();
 		
 		var myButton:FlxButton = new FlxButton(850, 165, "", clickA);
-		myButton.loadGraphic('assets/images/mainmenu/button.png', false, 128, 128);
+		myButton.loadGraphic(Paths.image('mainmenu/button'), false, 128, 128);
 		myButton.scale.set(0.55, 0.55);
 		add(myButton);
 		super.create();
